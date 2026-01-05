@@ -5,7 +5,7 @@
     --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
     --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
     --warning-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    
+
     --primary-color: #667eea;
     --primary-dark: #5a67d8;
     --secondary-color: #764ba2;
@@ -13,7 +13,7 @@
     --success-dark: #11998e;
     --danger-color: #f5576c;
     --warning-color: #f093fb;
-    
+
     /* Neutrals */
     --bg-dark: #0f0f23;
     --bg-card: #1a1a2e;
@@ -23,12 +23,12 @@
     --text-secondary: #a0aec0;
     --text-muted: #718096;
     --border-color: rgba(255, 255, 255, 0.1);
-    
+
     /* Glassmorphism */
     --glass-bg: rgba(255, 255, 255, 0.05);
     --glass-border: rgba(255, 255, 255, 0.1);
     --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    
+
     /* Spacing */
     --spacing-xs: 0.25rem;
     --spacing-sm: 0.5rem;
@@ -36,19 +36,19 @@
     --spacing-lg: 1.5rem;
     --spacing-xl: 2rem;
     --spacing-2xl: 3rem;
-    
+
     /* Border Radius */
     --radius-sm: 8px;
     --radius-md: 12px;
     --radius-lg: 16px;
     --radius-xl: 24px;
     --radius-full: 50%;
-    
+
     /* Transitions */
     --transition-fast: 0.15s ease;
     --transition-normal: 0.3s ease;
     --transition-slow: 0.5s ease;
-    
+
     /* Shadows */
     --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
     --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -57,7 +57,9 @@
 }
 
 /* ===== Reset & Base Styles ===== */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -84,7 +86,7 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: 
+    background:
         radial-gradient(ellipse at 20% 20%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
         radial-gradient(ellipse at 80% 80%, rgba(118, 75, 162, 0.15) 0%, transparent 50%),
         radial-gradient(ellipse at 50% 50%, rgba(240, 147, 251, 0.05) 0%, transparent 70%);
@@ -93,8 +95,15 @@ body::before {
 }
 
 @keyframes gradientShift {
-    0%, 100% { transform: scale(1) rotate(0deg); }
-    50% { transform: scale(1.1) rotate(5deg); }
+
+    0%,
+    100% {
+        transform: scale(1) rotate(0deg);
+    }
+
+    50% {
+        transform: scale(1.1) rotate(5deg);
+    }
 }
 
 /* ===== App Container ===== */
@@ -132,8 +141,15 @@ body::before {
 }
 
 @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
 .logo h1 {
@@ -307,6 +323,7 @@ body::before {
         opacity: 0;
         transform: translateY(-20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -390,6 +407,7 @@ body::before {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -401,6 +419,7 @@ body::before {
         opacity: 0;
         transform: translateY(-20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -467,52 +486,151 @@ body::before {
     align-items: center;
     gap: var(--spacing-md);
     margin-bottom: var(--spacing-lg);
+    position: relative;
 }
 
 .progress-bar {
     flex: 1;
-    height: 12px;
-    background: var(--bg-input);
+    height: 20px;
+    background: linear-gradient(to right,
+            rgba(255, 255, 255, 0.03) 0%,
+            rgba(255, 255, 255, 0.01) 100%);
     border-radius: var(--radius-full);
-    overflow: hidden;
+    overflow: visible;
     position: relative;
+    box-shadow:
+        inset 0 2px 4px rgba(0, 0, 0, 0.3),
+        0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .progress-fill {
     height: 100%;
-    background: var(--success-gradient);
     border-radius: var(--radius-full);
-    transition: width var(--transition-slow);
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
+    box-shadow:
+        0 0 10px rgba(56, 239, 125, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+
+    /* Dynamic gradient - will transition based on percentage via JS or multiple classes */
+    background: linear-gradient(135deg,
+            #11998e 0%,
+            #38ef7d 50%,
+            #4fffb0 100%);
 }
 
-.progress-fill::after {
+/* Progress states for different completion levels */
+.progress-fill[data-progress-level="low"] {
+    background: linear-gradient(135deg,
+            #f5576c 0%,
+            #f093fb 50%,
+            #ff6b9d 100%);
+    box-shadow:
+        0 0 10px rgba(245, 87, 108, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.progress-fill[data-progress-level="medium"] {
+    background: linear-gradient(135deg,
+            #f2994a 0%,
+            #f2c94c 50%,
+            #ffd700 100%);
+    box-shadow:
+        0 0 10px rgba(242, 201, 76, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.progress-fill[data-progress-level="high"] {
+    background: linear-gradient(135deg,
+            #11998e 0%,
+            #38ef7d 50%,
+            #4fffb0 100%);
+    box-shadow:
+        0 0 10px rgba(56, 239, 125, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Shimmer effect overlay */
+.progress-fill::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(
-        90deg,
-        transparent 0%,
-        rgba(255, 255, 255, 0.3) 50%,
-        transparent 100%
-    );
-    animation: shimmer 2s ease-in-out infinite;
+    background: linear-gradient(90deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.4) 50%,
+            transparent 100%);
+    animation: shimmer 2.5s ease-in-out infinite;
+    border-radius: var(--radius-full);
+}
+
+/* Pulse animation on update */
+@keyframes progressPulse {
+
+    0%,
+    100% {
+        transform: scaleY(1);
+        filter: brightness(1);
+    }
+
+    50% {
+        transform: scaleY(1.1);
+        filter: brightness(1.2);
+    }
+}
+
+.progress-fill.updating {
+    animation: progressPulse 0.4s ease-out;
 }
 
 @keyframes shimmer {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* Milestone markers (subtle indicators at 25%, 50%, 75%) */
+.progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        linear-gradient(90deg, transparent 24.5%, rgba(255, 255, 255, 0.08) 25%, transparent 25.5%),
+        linear-gradient(90deg, transparent 49.5%, rgba(255, 255, 255, 0.08) 50%, transparent 50.5%),
+        linear-gradient(90deg, transparent 74.5%, rgba(255, 255, 255, 0.08) 75%, transparent 75.5%);
+    pointer-events: none;
+    border-radius: var(--radius-full);
 }
 
 .progress-text {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--success-color);
+    font-size: 0.8rem;
+    font-weight: 700;
     min-width: 45px;
     text-align: right;
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease;
+}
+
+/* Dynamic text color based on progress */
+.progress-text[data-progress-level="low"] {
+    color: #f5576c;
+}
+
+.progress-text[data-progress-level="medium"] {
+    color: #f2c94c;
+}
+
+.progress-text[data-progress-level="high"] {
+    color: #38ef7d;
 }
 
 /* ===== Tasks Styles ===== */
@@ -583,12 +701,12 @@ body::before {
     border-color: var(--primary-color);
 }
 
-.task-checkbox input:checked + .checkmark {
+.task-checkbox input:checked+.checkmark {
     background: var(--success-gradient);
     border-color: transparent;
 }
 
-.task-checkbox input:checked + .checkmark::after {
+.task-checkbox input:checked+.checkmark::after {
     content: '✓';
     color: white;
     font-size: 14px;
@@ -665,8 +783,13 @@ body::before {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 .modal {
@@ -684,6 +807,7 @@ body::before {
         opacity: 0;
         transform: scale(0.9);
     }
+
     to {
         opacity: 1;
         transform: scale(1);

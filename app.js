@@ -240,6 +240,16 @@ function renderSprintCard(sprint, isCompleted) {
     progressFill.style.width = `${progress}%`;
     progressText.textContent = `${progress}%`;
 
+    // Set progress level for dynamic styling
+    let progressLevel = 'high';
+    if (progress <= 33) {
+        progressLevel = 'low';
+    } else if (progress <= 66) {
+        progressLevel = 'medium';
+    }
+    progressFill.setAttribute('data-progress-level', progressLevel);
+    progressText.setAttribute('data-progress-level', progressLevel);
+
     // Render tasks
     const tasksList = card.querySelector('.tasks-list');
     const noTasksMessage = card.querySelector('.no-tasks-message');
