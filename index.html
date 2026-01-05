@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sprint-based To-Do App - Organize your tasks into sprints and track your progress">
+    <title>Sprint To-Do App</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon">🚀</span>
+                    <h1>Sprint To-Do</h1>
+                </div>
+                <p class="tagline">Organize your work into sprints and track progress</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Create Sprint Section -->
+            <section class="create-sprint-section">
+                <div class="section-header">
+                    <h2>Create New Sprint</h2>
+                    <button class="btn btn-primary" id="toggleSprintForm">
+                        <span class="btn-icon">+</span> New Sprint
+                    </button>
+                </div>
+                
+                <div class="sprint-form-container hidden" id="sprintFormContainer">
+                    <form id="sprintForm" class="sprint-form">
+                        <div class="form-group">
+                            <label for="sprintName">Sprint Name</label>
+                            <input type="text" id="sprintName" placeholder="e.g., Week 1 Sprint" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="sprintDescription">Description</label>
+                            <textarea id="sprintDescription" placeholder="What's the goal of this sprint?" rows="3"></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="sprintDuration">Duration (days)</label>
+                                <input type="number" id="sprintDuration" placeholder="7" min="1" value="7">
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" id="cancelSprintForm">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Create Sprint</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Active Sprints Section -->
+            <section class="sprints-section" id="activeSprintsSection">
+                <div class="section-header">
+                    <h2>Active Sprints</h2>
+                    <span class="badge" id="activeSprintCount">0</span>
+                </div>
+                <div class="sprints-container" id="activeSprintsContainer">
+                    <div class="empty-state" id="noActiveSprintsMessage">
+                        <span class="empty-icon">📋</span>
+                        <p>No active sprints yet. Create one to get started!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Completed Sprints Section -->
+            <section class="sprints-section completed-sprints" id="completedSprintsSection">
+                <div class="section-header collapsible" id="toggleCompletedSprints">
+                    <h2>Completed Sprints</h2>
+                    <span class="badge" id="completedSprintCount">0</span>
+                    <span class="collapse-icon">▼</span>
+                </div>
+                <div class="sprints-container" id="completedSprintsContainer">
+                    <div class="empty-state" id="noCompletedSprintsMessage">
+                        <span class="empty-icon">✨</span>
+                        <p>No completed sprints yet.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>Sprint To-Do App &copy; 2026 | Built with ❤️</p>
+        </footer>
+    </div>
+
+    <!-- Task Modal -->
+    <div class="modal-overlay hidden" id="taskModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Add New Task</h3>
+                <button class="modal-close" id="closeTaskModal">&times;</button>
+            </div>
+            <form id="taskForm">
+                <input type="hidden" id="taskSprintId">
+                <div class="form-group">
+                    <label for="taskName">Task Name</label>
+                    <input type="text" id="taskName" placeholder="What needs to be done?" required>
+                </div>
+                <div class="form-group">
+                    <label for="taskDescription">Description</label>
+                    <textarea id="taskDescription" placeholder="Add more details..." rows="3"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelTaskForm">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Sprint Template (hidden) -->
+    <template id="sprintTemplate">
+        <div class="sprint-card" data-sprint-id="">
+            <div class="sprint-header">
+                <div class="sprint-info">
+                    <h3 class="sprint-name"></h3>
+                    <p class="sprint-description"></p>
+                    <div class="sprint-meta">
+                        <span class="sprint-duration"><span class="meta-icon">⏱️</span> <span class="duration-text"></span></span>
+                        <span class="sprint-tasks-count"><span class="meta-icon">📝</span> <span class="tasks-text">0 tasks</span></span>
+                    </div>
+                </div>
+                <div class="sprint-actions">
+                    <button class="btn btn-icon add-task-btn" title="Add Task">➕</button>
+                    <button class="btn btn-icon end-sprint-btn" title="End Sprint">✓</button>
+                </div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%"></div>
+                </div>
+                <span class="progress-text">0%</span>
+            </div>
+            <div class="tasks-container">
+                <div class="tasks-list"></div>
+                <div class="no-tasks-message">
+                    <p>No tasks yet. Click ➕ to add your first task!</p>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Task Template (hidden) -->
+    <template id="taskTemplate">
+        <div class="task-item" data-task-id="">
+            <label class="task-checkbox">
+                <input type="checkbox" class="task-status-checkbox">
+                <span class="checkmark"></span>
+            </label>
+            <div class="task-content">
+                <span class="task-name"></span>
+                <span class="task-description"></span>
+            </div>
+            <div class="task-actions">
+                <button class="btn btn-icon-small delete-task-btn" title="Delete Task">🗑️</button>
+            </div>
+        </div>
+    </template>
+
+    <script src="app.js"></script>
+</body>
+</html>

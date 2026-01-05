@@ -1,0 +1,15 @@
+Build me a to-do app with the following features:
+- I will host it as a public repo in github
+- You should use html, css, js, and github pages to host it
+- Create necessary files and folders based on the need
+- The app should have the following features:
+    - User should be able to add a 'to-do-sprint'
+    - When user will create sprint, he can name the sprint. He can also add a description and duration
+    - Under a sprint, when the user will add a task, he provide the following details:
+        - Task Name
+        - Task Description
+        - Task Status (Not Done, Done)
+    - There will be a progress bar for each sprint, the progress bar should consider the total amount of task in a sprint and the task completed to show visualize the progress with a nice progress bar
+    - User should be able to update the task status
+    - User can end a sprint.
+    - The app should contain the completed sprints. To store data, use localStorage         
